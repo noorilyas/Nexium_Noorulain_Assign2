@@ -1,4 +1,4 @@
-// src/app/internship/assignment-2/components/BlogForm.jsx
+
 "use client";
 
 import { useState } from "react";
@@ -15,8 +15,9 @@ export default function BlogForm() {
   const [summary, setSummary] = useState("");
   const [urduSummary, setUrduSummary] = useState("");
 
-  const simulateSummary = (text) =>
-    `This is a simulated AI‑style summary of: ${text}`;
+const simulateSummary = (text) =>
+  `This blog discusses key insights about productivity, including time management, deep work, and the importance of breaks.`;
+
 
   const translateToUrdu = (text) =>
     text
@@ -24,15 +25,45 @@ export default function BlogForm() {
       .map((w) => urduDict[w.toLowerCase()] || w)
       .join(" ");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!url.trim()) return toast.error("Please enter a blog URL");
-    const en = simulateSummary(url);
-    const ur = translateToUrdu(en);
-    setSummary(en);
-    setUrduSummary(ur);
-    toast.success("Summary generated!");
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!url.trim()) return toast.error("Please enter a blog URL");
+
+  const en = simulateSummary(url);
+  const ur = translateToUrdu(en);
+  setSummary(en);
+  setUrduSummary(ur);
+
+  toast.success("Summary generated!");
+
+  // 🔎 Get fullText from route.js
+  const fullTextRes = await fetch("/api/scrape", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url }),
+  });
+
+  const { fullText } = await fullTextRes.json();
+
+  // 🔗 Send to n8n webhook
+  fetch("https://nexium-noor.app.n8n.cloud/webhook/summarize-blog", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      url,
+      summary: en,
+      urduSummary: ur,
+      fullText: fullText || "", // fallback in case scraping fails
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => console.log("✅ n8n webhook response:", data))
+    .catch((err) => console.error("❌ n8n webhook error:", err));
+
+    
+};
+
+
 
   return (
     <motion.main
