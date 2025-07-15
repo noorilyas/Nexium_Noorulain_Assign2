@@ -16,14 +16,17 @@ export default function BlogForm() {
   const [urduSummary, setUrduSummary] = useState("");
 
 const simulateSummary = (text) =>
-  `This blog discusses key insights about productivity, including time management, deep work, and the importance of breaks.`;
+  `This blog discusses key insights about productivity, including time management, deep work, and  importance of breaks.`;
 
 
-  const translateToUrdu = (text) =>
-    text
-      .split(" ")
-      .map((w) => urduDict[w.toLowerCase()] || w)
-      .join(" ");
+  // 🆕 smarter word-by-word translator
+ const translateToUrdu = (text) =>
+   text
+     // strip commas / periods so “breaks.” ⇒ “breaks”
+     .replace(/[.,]/g, "")
+     .split(" ")
+     .map((w) => urduDict[w.toLowerCase()] || w)
+     .join(" ");
 
   const handleSubmit = async (e) => {
   e.preventDefault();
@@ -36,7 +39,7 @@ const simulateSummary = (text) =>
 
   toast.success("Summary generated!");
 
-  // 🔎 Get fullText from route.js
+  //  Get fullText from route.js
   const fullTextRes = await fetch("/api/scrape", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
