@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Your `README.md` is already **very strong** and shows real effort. Just a few small improvements in **formatting**, **consistency**, and **clarity** will make it **professional and submission-ready**.
 
-## Getting Started
+Here is the **final polished version**:
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# 📄 Blog Summariser – Nexium Internship Assignment 2
+
+A full-stack web app that lets users enter a blog URL, scrapes the blog content, simulates an English summary, translates it into Urdu using a dictionary-based approach, and stores the data in **MongoDB** and **Supabase** via an **n8n** workflow.
+
+---
+
+## 🌐 Live Deployment
+
+🔗 [View Live App on Vercel](https://nexium-noorulain-assign2.vercel.app/internship/assignment-2)
+
+---
+
+## 🚀 n8n Workflow (Live & Connected)
+
+The app sends a `POST` request to the following live webhook:
+
+```
+https://nexium-noor.app.n8n.cloud/webhook/summarize-blog
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This webhook:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+* Receives the blog URL, English & Urdu summaries, and full text
+* Saves the **summary + metadata** to **Supabase**
+* Saves the **full blog text** to **MongoDB Atlas**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 📨 Example Payload Sent:
 
-## Learn More
+```json
+{
+  "url": "https://example.com",
+  "summary": "This blog discusses key insights about productivity...",
+  "urduSummary": "یہ بلاگ پیداواری صلاحیت کے اہم نکات پر روشنی ڈالتا ہے...",
+  "fullText": "Full blog content..."
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 💻 Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* ✨ Built with **Next.js** and **ShadCN UI**
+* 🎞️ Smooth animations using **Framer Motion**
+* 🔍 Scrapes blog content from the provided URL (via `/api/scrape`)
+* 💡 Simulates English summary using static logic
+* 🌐 Translates English summary to Urdu using a custom JS dictionary
+* 📦 Stores full blog content in **MongoDB**
+* 🧾 Stores URL, summaries, and timestamp in **Supabase**
+* ⚙️ Integrated with **n8n webhook**
+* ☁️ **Deployed on Vercel**
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧰 Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* **Next.js** – React framework with server components
+* **Tailwind CSS + ShadCN UI** – Modern UI components
+* **Framer Motion** – UI animation
+* **Supabase** – Stores summaries and metadata
+* **MongoDB Atlas** – Stores full blog content
+* **n8n Cloud** – Handles webhook automation
+* **Vercel** – Hosting and deployment
+
+---
+
+## 📁 Project Structure
+
+nexium-assignment-2/
+├── .next/ # Next.js build files
+├── node_modules/ # Node.js dependencies
+├── public/ # Static assets
+├── src/
+│ └── app/
+│ ├── api/
+│ │ └── scrape/
+│ │ └── route.js # API route for blog scraping
+│ ├── internship/
+│ │ └── assignment-2/
+│ │ ├── components/
+│ │ │ ├── BlogForm.jsx # Component for blog URL input
+│ │ │ └── SummaryDisplay.jsx # Component to show Urdu summary
+│ │ └── data/
+│ │ └── urduDict.js # Urdu dictionary/helper
+│ └── page.js # Main UI page
+
+
+
+## 🧪 Test URL
+
+Use this blog for testing:
+
+🔗 `https://blog.hubspot.com/marketing/marketing-skills`
+
+---
+
+## 🔐 Environment Variables (on Vercel)
+
+```
+SUPABASE_URL=your_supabase_url  
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_key  
+MONGODB_URI=your_mongodb_connection_string  
+```
+
+> These are securely configured on Vercel and excluded from version control using `.gitignore`.
+
+---
+
+## 🧠 Author
+
+**Noorulain Ilyas**
+AI-First Web Development Intern
+🔗 [GitHub Profile](https://github.com/noorilyas)
+
+---
+
